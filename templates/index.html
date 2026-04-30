@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="actions">
+    <a href="{{ url_for('add_note') }}" class="btn btn-primary">➕ Add New Note</a>
+</div>
+
+<div class="notes-grid">
+    {% if notes %}
+        {% for note in notes %}
+        <div class="note-card">
+            <h3>{{ note[1] }}</h3>
+            <p>{{ note[2] }}</p>
+            <a href="{{ url_for('delete_note', note_id=note[0]) }}" 
+               class="btn btn-danger btn-sm"
+               onclick="return confirm('Delete this note?')">🗑️ Delete</a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <p>No notes yet. <a href="{{ url_for('add_note') }}">Create your first note!</a></p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
