@@ -10,6 +10,15 @@
         <label>Description:</label>
         <textarea name="description" rows="5" required></textarea>
     </div>
+
+    <!-- 🔒 ADD THIS -->
+    <div class="form-group">
+        <label>
+            <input type="checkbox" name="is_secret">
+            Mark as Secret 🔒
+        </label>
+    </div>
+
     <div class="form-actions">
         <button type="submit" class="btn btn-primary">Save Note</button>
         <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
