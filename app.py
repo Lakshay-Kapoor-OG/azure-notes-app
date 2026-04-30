@@ -5,6 +5,9 @@ import os
 app = Flask(__name__)
 app.secret_key = 'dev-secret-key'
 
+with app.app_context():
+    init_db()
+
 DB_PATH = os.path.join(os.path.dirname(__file__), 'notes.db')
 
 # Create DB if not exists
