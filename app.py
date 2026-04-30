@@ -5,6 +5,9 @@ import os
 app = Flask(__name__)
 app.secret_key = 'dev-secret-key'
 
+# 🔐 Secret vault password
+SECRET_PASSWORD = os.getenv("SECRET_PASSWORD", "1234")
+
 # ✅ IMPORTANT: persistent path for Azure
 DB_PATH = '/home/notes.db'
 
@@ -33,30 +36,35 @@ def get_db_connection():
 with app.app_context():
     init_db()
 
-# 🏠 Home route
+# 🏠 Home route (HIDE secret notes)
 @app.route('/')
 def index():
     try:
         conn = get_db_connection()
-        notes = conn.execute("SELECT * FROM notes ORDER BY id DESC").fetchall()
+        notes = conn.execute(
+            "SELECT * FROM notes WHERE is_secret = 0 ORDER BY id DESC"
+        ).fetchall()
         conn.close()
         return render_template('index.html', notes=notes)
     except Exception as e:
         flash(f"Error loading notes: {str(e)}")
         return render_template('index.html', notes=[])
 
-# ➕ Add note
+# ➕ Add note (UPDATED for secret notes)
 @app.route('/add', methods=['GET', 'POST'])
 def add_note():
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['description']
 
+        # 🔥 NEW LINE
+        is_secret = 1 if 'is_secret' in request.form else 0
+
         try:
             conn = get_db_connection()
             conn.execute(
-                "INSERT INTO notes (title, description) VALUES (?, ?)",
-                (title, description)
+                "INSERT INTO notes (title, description, is_secret) VALUES (?, ?, ?)",
+                (title, description, is_secret)
             )
             conn.commit()
             conn.close()
@@ -80,6 +88,24 @@ def delete_note(note_id):
         flash(f"Error deleting note: {str(e)}")
 
     return redirect(url_for('index'))
+
+# 🔒 VAULT ROUTE (NEW)
+@app.route('/vault', methods=['GET', 'POST'])
+def vault():
+    if request.method == 'POST':
+        password = request.form['password']
+
+        if password == SECRET_PASSWORD:
+            conn = get_db_connection()
+            notes = conn.execute(
+                "SELECT * FROM notes WHERE is_secret = 1 ORDER BY id DESC"
+            ).fetchall()
+            conn.close()
+            return render_template('vault.html', notes=notes)
+        else:
+            flash("Wrong password")
+
+    return render_template('vault_login.html')
 
 # 🔥 Run locally (Azure ignores this)
 if __name__ == '__main__':
