@@ -5,12 +5,10 @@ import os
 app = Flask(__name__)
 app.secret_key = 'dev-secret-key'
 
-with app.app_context():
-    init_db()
+# ✅ IMPORTANT: persistent path for Azure
+DB_PATH = '/home/notes.db'
 
-DB_PATH = os.path.join(os.path.dirname(__file__), 'notes.db')
-
-# Create DB if not exists
+# ✅ Create DB + table if not exists
 def init_db():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -24,12 +22,17 @@ def init_db():
     conn.commit()
     conn.close()
 
-# Get connection
+# ✅ Get DB connection
 def get_db_connection():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
 
+# ✅ Initialize DB on startup (CRITICAL for Azure)
+with app.app_context():
+    init_db()
+
+# 🏠 Home route
 @app.route('/')
 def index():
     try:
@@ -41,6 +44,7 @@ def index():
         flash(f"Error loading notes: {str(e)}")
         return render_template('index.html', notes=[])
 
+# ➕ Add note
 @app.route('/add', methods=['GET', 'POST'])
 def add_note():
     if request.method == 'POST':
@@ -62,6 +66,7 @@ def add_note():
 
     return render_template('add_note.html')
 
+# 🗑 Delete note
 @app.route('/delete/<int:note_id>')
 def delete_note(note_id):
     try:
@@ -75,7 +80,7 @@ def delete_note(note_id):
 
     return redirect(url_for('index'))
 
+# 🔥 Run locally (Azure ignores this)
 if __name__ == '__main__':
-    init_db()
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
