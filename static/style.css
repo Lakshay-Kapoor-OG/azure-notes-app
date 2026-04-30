@@ -1,0 +1,22 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; }
+.container { max-width: 800px; margin: 0 auto; padding: 2rem; }
+h1 { color: #333; margin-bottom: 2rem; text-align: center; }
+.alert { background: #d4edda; color: #155724; padding: 1rem; border-radius: 5px; margin-bottom: 1rem; }
+.actions { margin-bottom: 2rem; text-align: center; }
+.btn { display: inline-block; padding: 0.75rem 1.5rem; border-radius: 5px; text-decoration: none; font-weight: 500; }
+.btn-primary { background: #007bff; color: white; }
+.btn-primary:hover { background: #0056b3; }
+.btn-danger { background: #dc3545; color: white; }
+.btn-secondary { background: #6c757d; color: white; }
+.btn-sm { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+.notes-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.note-card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+.note-card h3 { color: #333; margin-bottom: 0.5rem; }
+.note-card p { color: #666; margin-bottom: 1rem; }
+.note-form { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+.form-group { margin-bottom: 1.5rem; }
+label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #333; }
+input, textarea { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; }
+.form-actions { display: flex; gap: 1rem; justify-content: flex-end; }
+.empty-state { text-align: center; padding: 3rem; background: white; border-radius: 10px; color: #666; }
