@@ -1,19 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>🔒 Secret Notes</h2>
+<h2 style="text-align:center;">🔒 CLASSIFIED VAULT</h2>
+<p style="text-align:center; color: #ff4d4d;">Authorized Access Only</p>
 
 <div class="notes-grid">
-    {% if notes %}
-        {% for note in notes %}
-        <div class="note-card">
-            <h3>{{ note['title'] }}</h3>
-            <p>{{ note['description'] }}</p>
-        </div>
-        {% endfor %}
-    {% else %}
-        <p>No secret notes found.</p>
-    {% endif %}
+    {% for note in notes %}
+    <div class="note-card">
+        <h3>{{ note['title'] }}</h3>
+        <p>{{ note['description'] }}</p>
+    </div>
+    {% endfor %}
 </div>
 
 <a href="{{ url_for('index') }}" class="btn btn-secondary">Back</a>
