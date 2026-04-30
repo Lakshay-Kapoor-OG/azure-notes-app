@@ -2,6 +2,9 @@
 {% block content %}
 <div class="actions">
     <a href="{{ url_for('add_note') }}" class="btn btn-primary">➕ Add New Note</a>
+
+    <!-- 🔒 ADD THIS -->
+    <a href="{{ url_for('vault') }}" class="btn btn-secondary">🔒 Secret Vault</a>
 </div>
 
 <div class="notes-grid">
